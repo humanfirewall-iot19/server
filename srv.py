@@ -13,8 +13,8 @@ import os
 
 #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-BASE_URL = "http://66e0d81f.ngrok.io/"
-PORT = 5000
+BASE_URL = "http://134.209.95.86:8080/" if os.getenv("BASE_URL") is None else os.getenv("BASE_URL")
+PORT = 5000 if os.getenv("PORT") is None else int(os.getenv("PORT"))
 
 UPLOAD_FOLDER = 'static/'
 
@@ -78,10 +78,11 @@ def do_magic(filename):
 
     return False, idx, similarity
 
+
+if not os.path.exists(INDEX_NAME):
+    index = faiss.IndexFlatL2(128)
+    faiss.write_index(index, INDEX_NAME)
+
 if __name__ == "__main__":
-    if not os.path.exists(INDEX_NAME):
-        index = faiss.IndexFlatL2(128)
-        faiss.write_index(index, INDEX_NAME)
-    
     tgbot.start()
-    app.run(port=PORT)
+    app.run(host="0.0.0.0", port=PORT)

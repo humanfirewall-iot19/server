@@ -1,0 +1,7 @@
+requests
+python_telegram_bot
+pyzbar
+Pillow
+Flask
+tornado
+face-recognition
