@@ -21,7 +21,9 @@ UPLOAD_FOLDER = 'static/'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "./" + UPLOAD_FOLDER
 
-tgbot = bot.Bot(os.getenv("TELEGRAM_TOKEN")))
+tgtok = os.getenv("TELEGRAM_TOKEN")
+assert tgtok is not None
+tgbot = bot.Bot(tgtok)
 
 def rand_str(l):
     return ''.join(random.choice(string.ascii_lowercase) for i in range(l))
@@ -47,11 +49,20 @@ def upload_file():
         filename = rand_str(16) + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         is_new, idx, similarity = do_magic(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        img_url = BASE_URL + UPLOAD_FOLDER + filename
+        img_url = BASE_URL + "image/" + filename
         print (board_id, str(idx), similarity, img_url)
         tgbot.send_notification(board_id, str(idx), img_url)
         return "ok"
     return "invalid file"
+
+@app.route('/image/<name>')
+def get_image(name):
+    content = open(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(name))).read()
+    if os.path.splitext(name)[1] == ".png":
+        return Response(content, mimetype="image/png")
+    if os.path.splitext(name)[1] == ".jpg":
+        return Response(content, mimetype="image/jpeg")
+    return Response(content)
 
 INDEX_NAME = "./disk_index"
 TRESHOLD = 0.3
