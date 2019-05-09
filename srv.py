@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, redirect, url_for, jsonify
+from flask import Flask, send_file, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
 
 import logging
@@ -57,12 +57,12 @@ def upload_file():
 
 @app.route('/image/<name>')
 def get_image(name):
-    content = open(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(name)), "rb").read()
+    path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(name))
     if os.path.splitext(name)[1] == ".png":
-        return Response(content, mimetype="image/png")
+        return send_file(path, mimetype="image/png")
     if os.path.splitext(name)[1] == ".jpg":
-        return Response(content, mimetype="image/jpeg")
-    return Response(content)
+        return send_file(path, mimetype="image/jpeg")
+    return send_file(path)
 
 INDEX_NAME = "./disk_index"
 TRESHOLD = 0.3
