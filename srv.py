@@ -57,7 +57,7 @@ def upload_file():
 
 @app.route('/image/<name>')
 def get_image(name):
-    content = open(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(name))).read()
+    content = open(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(name)), "rb").read()
     if os.path.splitext(name)[1] == ".png":
         return Response(content, mimetype="image/png")
     if os.path.splitext(name)[1] == ".jpg":
