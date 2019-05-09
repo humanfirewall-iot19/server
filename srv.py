@@ -21,7 +21,7 @@ UPLOAD_FOLDER = 'static/'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = "./" + UPLOAD_FOLDER
 
-tgbot = bot.Bot()
+tgbot = bot.Bot(os.getenv("TELEGRAM_TOKEN")))
 
 def rand_str(l):
     return ''.join(random.choice(string.ascii_lowercase) for i in range(l))
