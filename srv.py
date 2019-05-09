@@ -13,7 +13,7 @@ import os
 
 #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-BASE_URL = "https://2d4cf492.ngrok.io/"
+BASE_URL = "http://66e0d81f.ngrok.io/"
 PORT = 5000
 
 UPLOAD_FOLDER = 'static/'
@@ -54,7 +54,7 @@ def upload_file():
     return "invalid file"
 
 INDEX_NAME = "./disk_index"
-TRESHOLD = 0.6
+TRESHOLD = 0.3
 
 def do_magic(filename):
     img = face_recognition.load_image_file(filename)
