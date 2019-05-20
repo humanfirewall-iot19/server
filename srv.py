@@ -49,6 +49,8 @@ def upload_file():
         filename = rand_str(16) + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         is_new, idx, similarity = do_magic(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if is_new is None:
+            return "face not found"
         img_fo = open(UPLOAD_FOLDER + filename, "rb")
         print (board_id, str(idx), similarity)
         tgbot.send_notification(board_id, str(idx), img_fo)
@@ -71,7 +73,7 @@ def do_magic(filename):
     img = face_recognition.load_image_file(filename)
     encodings = face_recognition.face_encodings(img)
     if len(encodings) < 1:
-        raise RuntimeError("Face not found!")
+        return None, None, None #face not found
     enc = np.array(encodings[0], dtype=np.float32)
     enc.shape = (1, 128)
     
