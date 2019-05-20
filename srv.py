@@ -49,9 +49,9 @@ def upload_file():
         filename = rand_str(16) + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         is_new, idx, similarity = do_magic(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        img_url = BASE_URL + "image/" + filename
-        print (board_id, str(idx), similarity, img_url)
-        tgbot.send_notification(board_id, str(idx), img_url)
+        img_fo = open(UPLOAD_FOLDER + filename, "rb")
+        print (board_id, str(idx), similarity)
+        tgbot.send_notification(board_id, str(idx), img_fo)
         return "ok"
     return "invalid file"
 
