@@ -49,11 +49,9 @@ def upload_file():
         filename = rand_str(16) + ext
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         is_new, idx, similarity = do_magic(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        img_fo = None
-        if is_new is not None:
-            img_fo = open(UPLOAD_FOLDER + filename, "rb")
-        print (board_id, str(idx), similarity)
-        tgbot.send_notification(board_id, str(idx), img_fo)
+        img_fd = open(UPLOAD_FOLDER + filename, "rb")
+        print (board_id, str(idx), similarity, BASE_URL + UPLOAD_FOLDER + filename)
+        tgbot.send_notification(board_id, str(idx), img_fd, is_new is not None)
         if is_new is None:
             return "face not found"
         return "ok"
